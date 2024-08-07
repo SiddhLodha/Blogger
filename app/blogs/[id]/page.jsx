@@ -1,21 +1,21 @@
 'use client'
 import { assets, blog_data } from '@/assets/assets';
 import Footer from '@/components/Footer';
+import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
 
-const page = ({params}) => {
+const Page = ({params}) => {
 
     const [data,setData] = useState(null);
-    const fetchBlogData = ()=>{
-        for(let i=0;i<blog_data.length;i++){
-            if(Number(params.id)===blog_data[i].id){
-                setData(blog_data[i]);
-                console.log(blog_data[i])
-                break;
+    const fetchBlogData = async ()=>{
+        const response = await axios.get("/api/blog",{
+            params:{
+                id: params.id
             }
-        }
+        })
+        setData(response.data);
     }
 
     useEffect(()=>{
@@ -31,50 +31,14 @@ const page = ({params}) => {
         </div>
         <div className='text-center my-24'>
             <h1 className='text-2xl sm:text-5xl font-semibold max-w-[700px] mx-auto'>{data.title}</h1>
-            <Image className='mx-auto mt-6 border border-white rounded-full' src={data.author_img} cla width={60} height={60} alt=''  />
+            <Image className='mx-auto mt-6 border border-white rounded-full' src={data.authorImg} cla width={60} height={60} alt=''  />
             <p className='mt-1 pb-2 text-lg max-w-[740px] mx-auto'>{data.author}</p>
         </div>      
     </div>
     <div className='mx-5 max-w-[800px] md:mx-auto mt-[-100px] mb-10'>
         <Image className='border-4 border-white' src={data.image} width={1280} height={720} alt='' />
-        <h1 className='my-8 text-[26px] font-semibold'>Introduction</h1>
-        <p>{data.description}</p>
-        <h3 className='my-5 text-[18px] font-semibold'>
-            Step 1:
-        </h3>
-        <p className='my-3'>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Labore explicabo laborum, ea, fuga ipsam mollitia doloremque natus optio temporibus fugit similique amet dolorum quis at ullam, nobis quidem placeat. Eveniet?
-        </p>
-        <p className='my-3'>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Labore explicabo laborum, ea, fuga ipsam mollitia doloremque natus optio temporibus fugit similique amet dolorum quis at ullam, nobis quidem placeat. Eveniet?
-        </p>
-        <h3 className='my-5 text-[18px] font-semibold'>
-            Step 2:
-        </h3>
-        <p className='my-3'>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Labore explicabo laborum, ea, fuga ipsam mollitia doloremque natus optio temporibus fugit similique amet dolorum quis at ullam, nobis quidem placeat. Eveniet?
-        </p>
-        <p className='my-3'>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Labore explicabo laborum, ea, fuga ipsam mollitia doloremque natus optio temporibus fugit similique amet dolorum quis at ullam, nobis quidem placeat. Eveniet?
-        </p>
-        <h3 className='my-5 text-[18px] font-semibold'>
-            Step 3:
-        </h3>
-        <p className='my-3'>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Labore explicabo laborum, ea, fuga ipsam mollitia doloremque natus optio temporibus fugit similique amet dolorum quis at ullam, nobis quidem placeat. Eveniet?
-        </p>
-        <p className='my-3'>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Labore explicabo laborum, ea, fuga ipsam mollitia doloremque natus optio temporibus fugit similique amet dolorum quis at ullam, nobis quidem placeat. Eveniet?
-        </p>
-        <h3 className='my-5 text-[18px] font-semibold'>
-            Conclusion:
-        </h3>
-        <p className='my-3'>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Labore explicabo laborum, ea, fuga ipsam mollitia doloremque natus optio temporibus fugit similique amet dolorum quis at ullam, nobis quidem placeat. Eveniet?
-        </p>
-        <p className='my-3'>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Labore explicabo laborum, ea, fuga ipsam mollitia doloremque natus optio temporibus fugit similique amet dolorum quis at ullam, nobis quidem placeat. Eveniet?
-        </p>
+        <h1 className='my-8 text-[26px] font-semibold'>{data.description}</h1>
+        <p className='my-3'>{data.content}</p>
         <div className="my-24">
             <p className='text-black font-semibold my-4'>Share this Article on Social Media</p>
             <div className='flex'>
@@ -89,4 +53,4 @@ const page = ({params}) => {
   )
 }
 
-export default page
+export default Page
